@@ -36,5 +36,4 @@ public class PlayListArtistComparator implements Comparator {
 		AudioFile f2 = (AudioFile) o2;
 		return f1.getArtist().compareTo(f2.getArtist());
 	}
-
 }

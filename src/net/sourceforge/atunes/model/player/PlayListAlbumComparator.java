@@ -22,7 +22,6 @@ import java.util.Comparator;
 
 import net.sourceforge.atunes.kernel.modules.repository.audio.AudioFile;
 
-
 public class PlayListAlbumComparator implements Comparator {
 
 	public static PlayListAlbumComparator comparator = new PlayListAlbumComparator();
