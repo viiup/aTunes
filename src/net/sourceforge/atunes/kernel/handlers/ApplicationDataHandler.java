@@ -172,6 +172,9 @@ public class ApplicationDataHandler {
 		// Show genre in play list
 		HandlerProxy.getVisualHandler().getPlayListTableModel().setGenreVisible(state.isShowGenreInPlayList());
 		
+		// Show duration in play list
+		HandlerProxy.getVisualHandler().getPlayListTableModel().setDurationVisible(state.isShowDurationInPlayList());
+				
 		// Set volume
 		HandlerProxy.getVisualHandler().setVolume(state.getVolume());
 		HandlerProxy.getPlayerHandler().setVolume(state.getVolume());
