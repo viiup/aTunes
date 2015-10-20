@@ -44,9 +44,10 @@ public class PlayListTableModel implements TableModel {
 	private boolean albumVisible = true;
 	private boolean genreVisible = true;
 	private boolean durationVisible = true;
+	private boolean fileLocationVisible = true;
 
-	private enum PlayListColumn {FAVORITE, TRACK, TITLE, ARTIST, ALBUM, GENRE, DURATION}
-	private static PlayListColumn[] headers = {PlayListColumn.FAVORITE, PlayListColumn.TRACK, PlayListColumn.TITLE, PlayListColumn.ARTIST, PlayListColumn.ALBUM, PlayListColumn.GENRE, PlayListColumn.DURATION};
+	private enum PlayListColumn {FAVORITE, TRACK, TITLE, ARTIST, ALBUM, GENRE, DURATION, FILE_LOCATION}
+	private static PlayListColumn[] headers = {PlayListColumn.FAVORITE, PlayListColumn.TRACK, PlayListColumn.TITLE, PlayListColumn.ARTIST, PlayListColumn.ALBUM, PlayListColumn.GENRE, PlayListColumn.DURATION, PlayListColumn.FILE_LOCATION};
 	private PlayListColumn[] currentHeaders;
 	private static HashMap<PlayListColumn, Class> classes;
 	
@@ -59,6 +60,7 @@ public class PlayListTableModel implements TableModel {
 		classes.put(PlayListColumn.ALBUM, String.class);
 		classes.put(PlayListColumn.GENRE, String.class);
 		classes.put(PlayListColumn.DURATION, Long.class);
+		classes.put(PlayListColumn.FILE_LOCATION, String.class);
 	}
 	
 	private static HashMap<PlayListColumn, String> columnNames;
@@ -72,6 +74,7 @@ public class PlayListTableModel implements TableModel {
 		columnNames.put(PlayListColumn.ALBUM, LanguageTool.getString("ALBUM"));
 		columnNames.put(PlayListColumn.GENRE, LanguageTool.getString("GENRE"));
 		columnNames.put(PlayListColumn.DURATION, LanguageTool.getString("DURATION"));
+		columnNames.put(PlayListColumn.FILE_LOCATION, LanguageTool.getString("FILE_LOCATION"));
 	}
 	
 	public PlayListTableModel() {
@@ -106,6 +109,8 @@ public class PlayListTableModel implements TableModel {
 			currentHeaders[c++] = PlayListColumn.GENRE;
 		if (durationVisible)
 			currentHeaders[c++] = PlayListColumn.DURATION;
+		if (fileLocationVisible)
+			currentHeaders[c++] = PlayListColumn.FILE_LOCATION;
 		// The following line was keeping the Duration column always visible (SE6356: Change Request # 2)
 //		currentHeaders[c] = PlayListColumn.DURATION;
 	}
@@ -119,7 +124,7 @@ public class PlayListTableModel implements TableModel {
 	}
 
 	public int getColumnCount() {
-		return headers.length - (trackVisible ? 0 : 1) - (artistVisible ? 0 : 1) - (albumVisible ? 0 : 1) - (genreVisible ? 0 : 1) - (durationVisible ? 0 : 1);
+		return headers.length - (trackVisible ? 0 : 1) - (artistVisible ? 0 : 1) - (albumVisible ? 0 : 1) - (genreVisible ? 0 : 1) - (durationVisible ? 0 : 1) - (fileLocationVisible ? 0 : 1);
 	}
 	
 	public String getColumnName(int colIndex) {
@@ -149,8 +154,10 @@ public class PlayListTableModel implements TableModel {
 			return file.getAlbum();
 		else if (c == PlayListColumn.GENRE)
 			return file.getGenre();
-		else
+		else if (c == PlayListColumn.DURATION)
 			return file.getDuration();
+		else
+			return file.toPath();
 	}
 
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
