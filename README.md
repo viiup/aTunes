@@ -45,5 +45,5 @@ and, also shows this column with the name "Directorio" in the Spanish version:
 ![Change Request #2 Class Diagram](https://github.com/alamtx/aTunes/blob/master/aTunes_Docs/atunes_cd3.png)
 
 ---
-* The Assignment Description can be downloaded from [here]().
+* The Assignment Description can be downloaded from [here](https://github.com/alamtx/aTunes/blob/master/Assignment1_description.pdf?raw=true).
 * The aTunes source code that was used for the assignment can be downloaded from [here](https://utdallas.box.com/s/y23z29nsx35idwpk61ewzl6cxqn3pp8j).
