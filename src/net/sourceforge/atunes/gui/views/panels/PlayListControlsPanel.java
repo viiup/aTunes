@@ -32,6 +32,7 @@ import javax.swing.JSeparator;
 import net.sourceforge.atunes.gui.images.ImageLoader;
 import net.sourceforge.atunes.gui.views.controls.CustomButton;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.kernel.controllers.playListControls.PlayListControlsListener;
 import net.sourceforge.atunes.utils.language.LanguageTool;
 
 
@@ -289,5 +290,32 @@ public class PlayListControlsPanel extends JPanel {
 
 	public JCheckBoxMenuItem getShowDuration() {
 		return showDuration;
+	}
+	
+	public void addBindings(PlayListControlsListener listener){
+		this.getSortByTrack().addActionListener(listener);
+		this.getSortByTitle().addActionListener(listener);
+		this.getSortByArtist().addActionListener(listener);
+		this.getSortByAlbum().addActionListener(listener);
+		this.getSortByGenre().addActionListener(listener);
+		this.getSavePlaylistButton().addActionListener(listener);
+		this.getLoadPlaylistButton().addActionListener(listener);
+		this.getTopButton().addActionListener(listener);
+		this.getUpButton().addActionListener(listener);
+		this.getDeleteButton().addActionListener(listener);
+		this.getDownButton().addActionListener(listener);
+		this.getBottomButton().addActionListener(listener);
+		this.getInfoButton().addActionListener(listener);
+		this.getClearButton().addActionListener(listener);
+		this.getFavoriteSong().addActionListener(listener);
+		this.getFavoriteAlbum().addActionListener(listener);
+		this.getFavoriteArtist().addActionListener(listener);
+		this.getShowTrack().addActionListener(listener);
+		this.getShowArtist().addActionListener(listener);
+		this.getShowGenre().addActionListener(listener);
+		this.getShowDuration().addActionListener(listener);
+		this.getShowAlbum().addActionListener(listener);
+		this.getArtistButton().addActionListener(listener);
+		this.getAlbumButton().addActionListener(listener);
 	}
 }

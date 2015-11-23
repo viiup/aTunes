@@ -40,34 +40,12 @@ public class PlayListControlsController extends PanelController {
 	}
 	
 	protected void addBindings() {
+		
 		final PlayListControlsPanel panel = (PlayListControlsPanel) panelControlled;
 		
 		PlayListControlsListener listener = new PlayListControlsListener(panel);
 		
-		panel.getSortByTrack().addActionListener(listener);
-		panel.getSortByTitle().addActionListener(listener);
-		panel.getSortByArtist().addActionListener(listener);
-		panel.getSortByAlbum().addActionListener(listener);
-		panel.getSortByGenre().addActionListener(listener);
-		panel.getSavePlaylistButton().addActionListener(listener);
-		panel.getLoadPlaylistButton().addActionListener(listener);
-		panel.getTopButton().addActionListener(listener);
-		panel.getUpButton().addActionListener(listener);
-		panel.getDeleteButton().addActionListener(listener);
-		panel.getDownButton().addActionListener(listener);
-		panel.getBottomButton().addActionListener(listener);
-		panel.getInfoButton().addActionListener(listener);
-		panel.getClearButton().addActionListener(listener);
-		panel.getFavoriteSong().addActionListener(listener);
-		panel.getFavoriteAlbum().addActionListener(listener);
-		panel.getFavoriteArtist().addActionListener(listener);
-		panel.getShowTrack().addActionListener(listener);
-		panel.getShowArtist().addActionListener(listener);
-		panel.getShowGenre().addActionListener(listener);
-		panel.getShowDuration().addActionListener(listener);
-		panel.getShowAlbum().addActionListener(listener);
-		panel.getArtistButton().addActionListener(listener);
-		panel.getAlbumButton().addActionListener(listener);
+		panel.addBindings(listener);
 	}
 
 	protected void notifyReload() {}
