@@ -292,6 +292,7 @@ public class PlayListControlsPanel extends JPanel {
 		return showDuration;
 	}
 	
+	// amoyeen: added to remove feature envy
 	public void addBindings(PlayListControlsListener listener){
 		this.getSortByTrack().addActionListener(listener);
 		this.getSortByTitle().addActionListener(listener);

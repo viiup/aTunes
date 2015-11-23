@@ -45,6 +45,7 @@ public class PlayListControlsController extends PanelController {
 		
 		PlayListControlsListener listener = new PlayListControlsListener(panel);
 		
+		// amoyeen: modified to remove feature envy
 		panel.addBindings(listener);
 	}
 
