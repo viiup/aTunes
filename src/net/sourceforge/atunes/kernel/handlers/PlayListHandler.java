@@ -54,6 +54,8 @@ import org.apache.log4j.Logger;
 
 public class PlayListHandler {
 	
+	private PlayListHandlerOperations playListHandlerOperations = new PlayListHandlerOperations();
+
 	static Logger logger = Logger.getLogger(PlayListHandler.class);
 	
 	private static final String M3U_HEADER = "#EXTM3U";
@@ -166,40 +168,45 @@ public class PlayListHandler {
 		};
 	}
 	
-	private void sortPlayList(Comparator comp) {
-		AudioFile currentFile = HandlerProxy.getPlayerHandler().getCurrentPlayList().getCurrentFile();
-		PlayList currentPlaylist = HandlerProxy.getPlayerHandler().getCurrentPlayList();
-		Collections.sort(currentPlaylist, comp);
-		int pos = currentPlaylist.indexOf(currentFile);
-		HandlerProxy.getVisualHandler().getPlayListTableModel().removeSongs();
-		setPlayList(currentPlaylist);
-		currentPlaylist.setNextFile(pos);
-		HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(pos);
-	}
-	
 	public void sortPlaylistByTrack() {
-		sortPlayList(PlayListTrackComparator.comparator);
+		playListHandlerOperations.sortPlayList(PlayListTrackComparator.comparator, this);
 	}
 	
 	public void sortPlaylistByTitle() {
-		sortPlayList(PlayListTitleComparator.comparator);
+		playListHandlerOperations.sortPlayList(PlayListTitleComparator.comparator, this);
 	}
 	
 	public void sortPlaylistByArtist() {
-		sortPlayList(PlayListArtistComparator.comparator);
+		playListHandlerOperations.sortPlayList(PlayListArtistComparator.comparator, this);
 	}
 	
 	public void sortPlaylistByAlbum() {
-		sortPlayList(PlayListAlbumComparator.comparator);
+		playListHandlerOperations.sortPlayList(PlayListAlbumComparator.comparator, this);
 	}
 
 	public void sortPlaylistByGenre() {
-		sortPlayList(PlayListGenreComparator.comparator);
+		playListHandlerOperations.sortPlayList(PlayListGenreComparator.comparator, this);
 	}
 
 	public void sortPlaylistByDuration() {
-		sortPlayList(PlayListDurationComparator.comparator);
-	}	
+		playListHandlerOperations.sortPlayList(PlayListDurationComparator.comparator, this);
+	}
+	
+	public void moveToTop(int[] rows) {
+		playListHandlerOperations.moveToTop(rows);
+	}
+	
+	public void moveUp(int[] rows) {
+		playListHandlerOperations.moveUp(rows);
+	}
+
+	public void moveDown(int[] rows) {
+		playListHandlerOperations.moveDown(rows);
+	}
+	
+	public void moveToBottom(int[] rows) {
+		playListHandlerOperations.moveToBottom(rows);
+	}
 	
 	private static ArrayList<String> read(File file) {
 		try{
@@ -319,71 +326,6 @@ public class PlayListHandler {
 		}
 		HandlerProxy.getVisualHandler().showPlaylistSongNumber(currentPlayList.size());
 	}
-	
-	public void moveToTop(int[] rows) {
-		PlayList currentPlayList = HandlerProxy.getPlayerHandler().getCurrentPlayList();
-		for (int i = 0; i < rows.length; i++) {
-			AudioFile aux = currentPlayList.get(rows[i]);
-			currentPlayList.remove(rows[i]);
-			currentPlayList.add(i, aux);
-		}
-		if (rows[0] > currentPlayList.getNextFile()) {
-			currentPlayList.setNextFile(currentPlayList.getNextFile() + rows.length);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		} else if (rows[0] <= currentPlayList.getNextFile() && currentPlayList.getNextFile() <= rows[rows.length-1]) {
-			currentPlayList.setNextFile(currentPlayList.getNextFile() - rows[0]);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		}
-	}
-	
-	public void moveUp(int[] rows) {
-		PlayList currentPlayList = HandlerProxy.getPlayerHandler().getCurrentPlayList();
-		for (int i = 0; i < rows.length; i++) {
-			AudioFile aux = currentPlayList.get(rows[i]);
-			currentPlayList.remove(rows[i]);
-			currentPlayList.add(rows[i]-1, aux);
-		}
-		if (rows[0] -1 == currentPlayList.getNextFile()) {
-			currentPlayList.setNextFile(currentPlayList.getNextFile() + rows.length);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		} else if (rows[0] <= currentPlayList.getNextFile() && currentPlayList.getNextFile() <= rows[rows.length-1]) {
-			currentPlayList.setNextFile(currentPlayList.getNextFile() - 1);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		}
-	}
-
-	public void moveDown(int[] rows) {
-		PlayList currentPlayList = HandlerProxy.getPlayerHandler().getCurrentPlayList();
-		for (int i = rows.length-1; i >= 0; i--) {
-			AudioFile aux = currentPlayList.get(rows[i]);
-			currentPlayList.remove(rows[i]);
-			currentPlayList.add(rows[i]+1, aux);
-		}
-		if (rows[rows.length-1] +1 == currentPlayList.getNextFile()) {
-			currentPlayList.setNextFile(currentPlayList.getNextFile() - rows.length);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		} else if (rows[0] <= currentPlayList.getNextFile() && currentPlayList.getNextFile() <= rows[rows.length-1]){
-			currentPlayList.setNextFile(currentPlayList.getNextFile() + 1);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		}
-	}
-	
-	public void moveToBottom(int[] rows) {
-		PlayList currentPlayList = HandlerProxy.getPlayerHandler().getCurrentPlayList();
-		int j = 0;
-		for (int i = rows.length-1; i >= 0; i--) {
-			AudioFile aux = currentPlayList.get(rows[i]);
-			currentPlayList.remove(rows[i]);
-			currentPlayList.add(currentPlayList.size() - j++, aux);
-		}
-		if (rows[rows.length-1] < currentPlayList.getNextFile()) {
-			currentPlayList.setNextFile(currentPlayList.getNextFile() - rows.length);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		} else if (rows[0] <= currentPlayList.getNextFile() && currentPlayList.getNextFile() <= rows[rows.length-1]) {
-			currentPlayList.setNextFile(currentPlayList.getNextFile() + currentPlayList.size() - rows[rows.length-1] - 1);
-			HandlerProxy.getControllerHandler().getPlayListController().setSelectedSong(currentPlayList.getNextFile());
-		}
-	}
 
 	public void removeSongs() {
 		PlayList currentPlayList = HandlerProxy.getPlayerHandler().getCurrentPlayList();
@@ -459,7 +401,7 @@ public class PlayListHandler {
 		return nonFilteredPlayList != null;
 	}
 	
-	private void setPlayList(ArrayList<AudioFile> files) {
+	public void setPlayList(ArrayList<AudioFile> files) {
 		PlayList currentPlayList = HandlerProxy.getPlayerHandler().getCurrentPlayList();
 		if (files != null && files.size() >= 1) {
 			if (currentPlayList.isEmpty()) {
